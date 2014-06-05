@@ -92,6 +92,16 @@ void systemAudioCallback(SystemSoundID soundID, void *clientData);
 - (void)alert
 {AudioServicesPlayAlertSound(audioEffect);}
 
+- (void)playWithCompletion:(void (^)(BOOL finished))completion {
+    self.completionBlock = completion;
+    [self play];
+}
+
+- (void)alertWithCompletion:(void (^)(BOOL finished))completion {
+    self.completionBlock = completion;
+    [self alert];
+}
+
 - (void)dealloc
 {
     AudioServicesRemoveSystemSoundCompletion(audioEffect);
@@ -109,6 +119,10 @@ void systemAudioCallback(SystemSoundID soundID, void *clientData)
     {
         [sound.delegate sound: sound
              didFinishPlaying: YES];
+    }
+    if (sound.completionBlock)
+    {
+        sound.completionBlock(YES);
     }
 }
 //========================================================================//

@@ -25,6 +25,7 @@
 {
     @private
     SystemSoundID audioEffect;
+    void (^completionBlock) (BOOL finished);
 }
 
 @property (nonatomic, copy)   NSString *          name;
@@ -40,6 +41,9 @@
 
 - (void)play;
 - (void)alert;
+
+- (void)playWithCompletion:(void (^)(BOOL finished))completion;
+- (void)alertWithCompletion:(void (^)(BOOL finished))completion;
 
 @end
 //========================================================================//
